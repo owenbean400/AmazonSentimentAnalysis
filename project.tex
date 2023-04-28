@@ -34,7 +34,7 @@
 % smaller than 5cm (the original size); we will check this
 % in the camera-ready version and ask you to change it back.
 
-\title{Amazon Senitment Analysis Title}
+\title{Affects of Proper Nouns on Amazon Sentiment Analysis}
 
 \author{Anne Turmel \\
   USM / Address line 1 \\
@@ -52,15 +52,76 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-This document contains the instructions for preparing a manuscript for the proceedings of RANLP 2023.
-The document itself conforms to its own specifications, and is therefore an example of what your manuscript should look like.
-These instructions should be used for both papers submitted for review and for final versions of accepted papers.
-Authors are asked to conform to all the directions reported in this document.
+  % TO DO
+Abstraction needs to be written after writing everything else
 \end{abstract}
 
 \section{Introduction}
 
+% adjectives, adverbs, nouns, and verbs can obtain sentiment detail/ - Page 11 of 
+% nouns are important for content details - Page 19
+% Object is a noun, proper noun, and sometimes a verb - Page 25
 
+Sentiment Analysis looks into extracting subjective information from a source. It has been noted from Bing Liu sentiment analysis on subjectivity that adjectives, adverbs, nouns, and verbs can obtain sentiment detail \cite{subject}. Furthermore, an object in object extraction from sentiment is a noun, proper noun, and sometimes a verb. Even though nouns are a way of obtaining subjective information, further investigation has not been looked into for proper nouns.
 
+There has been plenty of models on predicting sentiment analysis of Amazon reviews. The top 3 models; accurancies unsupervised data augmentation for consistency training \cite{unsupervised}, deep pyramid convolutional neural networks for text categorization \cite{pyramid}, and disconnected recurrent neural networks for text categorization \cite{disconnect}; all has been tested with Amazon product reviews from users. Although those models accurancies are between 60\%-70\% percent, does simplifing the proper noun into one word affect Amazon sentiment analysis in positive or negative accurancies.
+
+\section{Related Work}
+
+\section{Task}
+
+The task is to see if proper nouns contains necessary information needed for sentiment analysis in Amazon product reviews.
+
+\section{Method}
+
+Amazon product review data comes with a rating and review that can be used for training. The product must parse out proper nouns with a replacement token to represent their is a proper noun, however, removes the context of the proper noun. An example of removing the proper noun context can be shown.
+
+\begin{small}
+\begingroup\makeatletter\def\@currenvir{verbatim}
+\verbatim
+"It's just like having $100. Except I
+couldn't get Walmart to accept it.
+Apparently you can only use it on the
+interweb at Amazon." 
+
+Detect Amazon and Walmart as proper noun
+replaced with <NNP>
+
+"It's just like having $100. Except I
+couldn't get <NNP> to accept it. 
+Apparently you can only use it on 
+the interweb at <NNP>."
+\end{verbatim}
+\end{small}
+
+% Picture representation
+% "It's just like having $100. Except I couldn't get Walmart to accept it. Apparently you can only use it on the interweb at Amazon." -> Detect Amazon and Walmart as proper noun -> "It's just like having $100. Except I couldn't get <NNP> to accept it. Apparently you can only use it on the interweb at <NNP>."
+
+\subsection{LUKE}
+
+LUKE is an entity extraction model that can be used for extracting proper nouns in an Amazon product review.
+
+\subsection{NLTK Speech Tagging}
+
+NLTK library comes with speech tagging library that can be used for tagging the proper nouns in a text.
+
+\subsection{Unsupervised Data Augmentation}
+
+Unsupervised data augmentation is a way to train the model. Can make comparsion on data with proper noun context and without.
+
+\subsection{Deep Pyramid Convolutional Neural Networks for Text Categorization}
+
+Deep Pyramid Convolutional Neural Networks for Text Categorization is another method for training a model for sentiment analysis. Can make comparsion on data with proper noun context and without.
+
+\subsection{FastText}
+
+FastText can be used in a bag of tricks for efficient text classifcation. Can make comparsion on data with proper noun context and without.
+
+\section{Experiments}
+
+\section{Conclusion}
+
+\bibliographystyle{plain}
+\bibliography{project}
 
 \end{document}
