@@ -119,7 +119,24 @@ FastText can be used in a bag of tricks for efficient text classifcation. Can ma
 
 \section{Experiments}
 
+% Need to cite https://cseweb.ucsd.edu/~jmcauley/pdfs/emnlp19a.pdf
+% Data is from that source.
+The Amazon product review data came from University of California, San Diego Amazon product review dataset. The data consists of the rating and the review text that came with the rating.
+
+\subsection{Parsing proper nouns}
+
+From the Amazon product review data, two different methods of parsing the proper nouns were used. The first method used LUKE that was pre-trained on specific data. NLTK speech tagging was the other method used for detecting proper nouns. There will be three different version of the Amazon review text for each of the Amazon rating. Some limitation can be detected due to the not being 100\% accurate at detecting proper nouns.
+
+\subsection{Training the Models}
+
+The three methods, Unsupervised Data Augmentation, Deep Pyramid Convolutional Neural
+Networks for Text Categorization, and FastText will be used for detecting sentiment analysis. Each model requiring training will be done with 60\% training, 20\% validation, and 20\% testing. The models will be tested on accurancy between the three different Amazon product reviews, one being the unparsed review, the other two having proper nouns replaced with ambiguity word. The only change with the models is the text has proper nouns parsed out. This will show how the model compares with or without the context of the proper noun.
+
+\subsection{Results}
+
 \section{Conclusion}
+
+Conclusion.
 
 \bibliographystyle{plain}
 \bibliography{project}
