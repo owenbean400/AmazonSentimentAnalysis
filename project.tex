@@ -34,7 +34,7 @@
 % smaller than 5cm (the original size); we will check this
 % in the camera-ready version and ask you to change it back.
 
-\title{Affects of Proper Nouns on Amazon Sentiment Analysis}
+\title{Affects of Named Entities on Amazon Sentiment Analysis}
 
 \author{Anne Turmel \\
   USM / Address line 1 \\
@@ -53,7 +53,7 @@
 \maketitle
 \begin{abstract}
   % TO DO
-Abstraction needs to be written after writing everything else
+% Abstraction needs to be written after writing everything else
 \end{abstract}
 
 \section{Introduction}
@@ -62,19 +62,24 @@ Abstraction needs to be written after writing everything else
 % nouns are important for content details - Page 19
 % Object is a noun, proper noun, and sometimes a verb - Page 25
 
-Sentiment Analysis looks into extracting subjective information from a source. It has been noted from Bing Liu sentiment analysis on subjectivity that adjectives, adverbs, nouns, and verbs can obtain sentiment detail \cite{subject}. Furthermore, an object in object extraction from sentiment is a noun, proper noun, and sometimes a verb. Even though nouns are a way of obtaining subjective information, further investigation has not been looked into for proper nouns.
+Sentiment Analysis looks into extracting subjective information from a source. Some words has more weight in sentiment analysis compared to other words. With reviews from Amazon, name entities are mentioned in the review text. 
 
-There has been plenty of models on predicting sentiment analysis of Amazon reviews. The top 3 models; accurancies unsupervised data augmentation for consistency training \cite{unsupervised}, deep pyramid convolutional neural networks for text categorization \cite{pyramid}, and disconnected recurrent neural networks for text categorization \cite{disconnect}; all has been tested with Amazon product reviews from users. Although those models accurancies are between 60\%-70\% percent, does simplifing the proper noun into one word affect Amazon sentiment analysis in positive or negative accurancies.
+There has been plenty of models on predicting sentiment analysis of Amazon reviews. The top 3 models; accurancies unsupervised data augmentation for consistency training \cite{unsupervised}, deep pyramid convolutional neural networks for text categorization \cite{pyramid}, and disconnected recurrent neural networks for text categorization \cite{disconnect}; all has been tested with Amazon product reviews from users. Although those models accurancies are between 60\%-70\% percent, does simplifing the name enitities into one word affect Amazon sentiment analysis in positive or negative accurancies. The possiblility of removing the context of named entity affects the training and tests of sentiment analysis.
 
 \section{Related Work}
 
+% https://aclanthology.org/H05-1044.pdf
+Specific words has neutral, positive, or negative polarity when it comes to sentiment analysis. Recognizing Contextual Polarity in Phrase-Level Sentiment Analysis research determined a new stragety of figuring out polarity of words in senitment analysis. The research did not look into the part of speech of these words, but showed how some words can have no impact to sentiment analysis. 
+
+Research into subjectivity compared with objectivity of a word looked into parts of speech affects of sentiment analysis from Bing Liu \cite{subject}. It has been noted from Bing Liu sentiment analysis on subjectivity that adjectives, adverbs, nouns, and verbs can obtain sentiment detail. Furthermore, an object in object extraction from sentiment is a noun, proper noun, and sometimes a verb. The paper didn't look into named entities give the impacts of training with the context of the named entities.
+
 \section{Task}
 
-The task is to see if proper nouns contains necessary information needed for sentiment analysis in Amazon product reviews.
+The task is to see if named entities contains necessary information needed for sentiment analysis in Amazon product reviews models. The difference between each similar model is one data is trained on Amazon product review while the other model is trained on same Amazon product review that replaced named entities with a token. The goal is to compare the two models to see if removing named entities has any impacts on sentiment analysis.
 
 \section{Method}
 
-Amazon product review data comes with a rating and review that can be used for training. The product must parse out proper nouns with a replacement token to represent their is a proper noun, however, removes the context of the proper noun. An example of removing the proper noun context can be shown.
+Amazon product review data comes with a rating and review that can be used for training. The product must parse out named entities with a replacement token to represent there is a named entity, however, removes the context of the named entity. An example of removing named entities context can be shown.
 
 \begin{small}
 \begingroup\makeatletter\def\@currenvir{verbatim}
@@ -84,8 +89,8 @@ couldn't get Walmart to accept it.
 Apparently you can only use it on the
 interweb at Amazon." 
 
-Detect Amazon and Walmart as proper noun
-replaced with <NNP>
+Detect Amazon and Walmart as named entity,
+so replaced with <NNP>
 
 "It's just like having $100. Except I
 couldn't get <NNP> to accept it. 
@@ -99,38 +104,34 @@ the interweb at <NNP>."
 
 \subsection{LUKE}
 
-LUKE is an entity extraction model that can be used for extracting proper nouns in an Amazon product review.
+LUKE is an entity extraction model that can be used for extracting entities in an Amazon product review. LUKE-500K pre-trained data had an F1 score of 94.3 on named entity recognition from CoNLL-2003 dataset \cite{yamada-etal-2020-luke}. This gives the capability for machine to detect the named entity in a passage. Knowing where the entity names are in the passage, those words can be replaced with one token, so the context of the named entity is not known. To conclude, LUKE will parse out the named entity before sending the review text to the model.
 
-\subsection{NLTK Speech Tagging}
+% \subsection{Unsupervised Data Augmentation}
 
-NLTK library comes with speech tagging library that can be used for tagging the proper nouns in a text.
+% Unsupervised data augmentation is a way to train the model. Can make comparsion on data with proper noun context and without.
 
-\subsection{Unsupervised Data Augmentation}
+% \subsection{Deep Pyramid Convolutional Neural Networks for Text Categorization}
 
-Unsupervised data augmentation is a way to train the model. Can make comparsion on data with proper noun context and without.
+% Deep Pyramid Convolutional Neural Networks for Text Categorization is another method for training a model for sentiment analysis. Can make comparsion on data with proper noun context and without.
 
-\subsection{Deep Pyramid Convolutional Neural Networks for Text Categorization}
+% \subsection{FastText}
 
-Deep Pyramid Convolutional Neural Networks for Text Categorization is another method for training a model for sentiment analysis. Can make comparsion on data with proper noun context and without.
-
-\subsection{FastText}
-
-FastText can be used in a bag of tricks for efficient text classifcation. Can make comparsion on data with proper noun context and without.
+% FastText can be used in a bag of tricks for efficient text classifcation. Can make comparsion on data with proper noun context and without.
 
 \section{Experiments}
 
 % Need to cite https://cseweb.ucsd.edu/~jmcauley/pdfs/emnlp19a.pdf
 % Data is from that source.
-The Amazon product review data came from University of California, San Diego Amazon product review dataset. The data consists of the rating and the review text that came with the rating.
+The Amazon product review data came from University of California, San Diego Amazon product review dataset \cite{data}. The data consists of the rating and the review text that came with the rating for training and testing. The rating from 1-5 will be simplified to 1-2 being negative, 3 being neutral, 4-5 being positive.
 
-\subsection{Parsing proper nouns}
+\subsection{Parsing Named Entities}
 
-From the Amazon product review data, two different methods of parsing the proper nouns were used. The first method used LUKE that was pre-trained on specific data. NLTK speech tagging was the other method used for detecting proper nouns. There will be three different version of the Amazon review text for each of the Amazon rating. Some limitation can be detected due to the not being 100\% accurate at detecting proper nouns.
+From each category of Amazon product review, there is two copies of the same product review. One copy has the original Amazon product review text. The second copy has the review text parsed out named entities with a token (NNP). There is 10,000 Amazon product reviews for each category that was used for the models.
 
 \subsection{Training the Models}
 
-The three methods, Unsupervised Data Augmentation, Deep Pyramid Convolutional Neural
-Networks for Text Categorization, and FastText will be used for detecting sentiment analysis. Each model requiring training will be done with 60\% training, 20\% validation, and 20\% testing. The models will be tested on accurancy between the three different Amazon product reviews, one being the unparsed review, the other two having proper nouns replaced with ambiguity word. The only change with the models is the text has proper nouns parsed out. This will show how the model compares with or without the context of the proper noun.
+% Edit the model once done
+The  will be used for detecting sentiment analysis. Each model requiring training will be done with 60\% training, 20\% validation, and 20\% testing. The models will be tested on accurancy between the three different Amazon product reviews, one being the unparsed review, the other two having proper nouns replaced with ambiguity word. The only change with the models is the text has proper nouns parsed out. This will show how the model compares with or without the context of the proper noun.
 
 \subsection{Results}
 
