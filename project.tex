@@ -75,11 +75,11 @@ Research into subjectivity compared with objectivity of a word looked into parts
 
 \section{Task}
 
-The task is to see if named entities contains necessary information needed for sentiment analysis in Amazon product reviews models. The difference between each similar model is one data is trained on Amazon product review while the other model is trained on same Amazon product review that replaced named entities with a token. The goal is to compare the two models to see if removing named entities has any impacts on sentiment analysis.
+The task is to see if named entities contains necessary information is needed for sentiment analysis in Amazon product reviews models. The difference between each similar model is one data is trained on Amazon product review while the other model is trained on same Amazon product review that replaced named entities with a mask. The goal is to compare the two models to see if removing named entities has any impacts on sentiment analysis.
 
 \section{Method}
 
-Amazon product review data comes with a rating and review that can be used for training. The product must parse out named entities with a replacement token to represent there is a named entity, however, removes the context of the named entity. An example of removing named entities context can be shown.
+Amazon product review data comes with a rating and review that can be used for training. The product must parse out named entities with a replacement mask to represent there is a named entity, however, removes the context of the named entity. An example of removing named entities context can be shown.
 
 \begin{small}
 \begingroup\makeatletter\def\@currenvir{verbatim}
@@ -104,7 +104,11 @@ the interweb at <NNP>."
 
 \subsection{LUKE}
 
-LUKE is an entity extraction model that can be used for extracting entities in an Amazon product review. LUKE-500K pre-trained data had an F1 score of 94.3 on named entity recognition from CoNLL-2003 dataset \cite{yamada-etal-2020-luke}. This gives the capability for machine to detect the named entity in a passage. Knowing where the entity names are in the passage, those words can be replaced with one token, so the context of the named entity is not known. To conclude, LUKE will parse out the named entity before sending the review text to the model.
+LUKE is an entity extraction model that can be used for extracting entities in an Amazon product review. LUKE-500K pre-trained data had an F1 score of 94.3 on named entity recognition from CoNLL-2003 dataset \cite{yamada-etal-2020-luke}. This gives the capability for machine to detect the named entity in a passage. Knowing where the entity names are in the passage, those words can be replaced with one mask, so the context of the named entity is not known. To conclude, LUKE will parse out the named entity before sending the review text to the model.
+
+\subsection{albert-base-v2}
+
+Albert is pretrained BERT model on BookCorpus \cite{DBLP:journals/corr/abs-1909-11942}. The pretrained model is used to understand the english language. The purpose of Albert is to have a pretrained model ready to for fine tuning. Reason for albert is the fine-tuned task of making decision based on whole sentences. The fine-tuning process will learn from Amazon product review text to classify the rating of the review. The rating of the review will show the sentiment analysis of the fine-tuned model.
 
 % \subsection{Unsupervised Data Augmentation}
 
@@ -122,18 +126,42 @@ LUKE is an entity extraction model that can be used for extracting entities in a
 
 % Need to cite https://cseweb.ucsd.edu/~jmcauley/pdfs/emnlp19a.pdf
 % Data is from that source.
-The Amazon product review data came from University of California, San Diego Amazon product review dataset \cite{data}. The data consists of the rating and the review text that came with the rating for training and testing. The rating from 1-5 will be simplified to 1-2 being negative, 3 being neutral, 4-5 being positive.
+The Amazon product review data came from University of California, San Diego Amazon product review dataset \cite{data}. The data consists of the rating and the review text that came with the rating for training and testing. The rating from 1-5 will be used for the sentiment feeling of the Amazon review.
 
 \subsection{Parsing Named Entities}
 
-From each category of Amazon product review, there is two copies of the same product review. One copy has the original Amazon product review text. The second copy has the review text parsed out named entities with a token (NNP). There is 10,000 Amazon product reviews for each category that was used for the models.
+From each category of Amazon product review, there is two copies of the same product review. One copy has the original Amazon product review text. The second copy has the review text parsed out named entities with a mask (NNP). There is at least 10,000 Amazon product reviews for each category that was used for the models. This leaves over 1,000 review text being tested for evaluation of the model.
 
 \subsection{Training the Models}
 
 % Edit the model once done
-The  will be used for detecting sentiment analysis. Each model requiring training will be done with 60\% training, 20\% validation, and 20\% testing. The models will be tested on accurancy between the three different Amazon product reviews, one being the unparsed review, the other two having proper nouns replaced with ambiguity word. The only change with the models is the text has proper nouns parsed out. This will show how the model compares with or without the context of the proper noun.
+The albert-base-v2 will be used for fine-tuning on detecting sentiment analysis. Each model requiring training will be done with 60\% training, 20\% validation, and 20\% testing. The models will be tested on accurancy between the Amazon product reviews untouched and the review that has named entity replaced with a mask. The only change with the models is the text has named entity parsed out. This will show how the model compares with or without the context of the proper noun.
+
+When training with albert pretrained model, the PyTorch seed is set to 1324224321 to reduce random when training the model. Moreover, the learning rate, batch size, and number of epochs stays the same. Keeping these values the same will ensure the only change between the two models is the review text being masked or not.
 
 \subsection{Results}
+
+Shown in figure 1.1, the left column is the category the Amazon product review data was in. The middle column is the original unalterated product review text accurancy for testing evaluation after training. The right column is the alterate prduct review with named entity detected by LUKE to be replaced with a mask testing accurancy after training on masked review text. \\
+
+\begin{center}
+\textbf{albert-base-v2 fine-tuned accurancy}
+\noindent\begin{tabular}{|l|r|r|}
+\hline
+ Category & Ori. Accur. & LUKE Accur. \\
+\hline
+Video Games (1 e.)    & 0.789       & 0.779       \\
+Video Games (5 e.)    & 0.784       & 0.775       \\
+Appliances (1 e.)     & 0.740       & 0.712       \\
+Appliances (5 e.)     & 0.712       & 0.714       \\
+Toys and Games (1 e.) & 0.853       & 0.850       \\
+Toys and Games (5 e.) & 0.841       & 0.846       \\
+All Beauty (1 e.)     & 0.809       & 0.801       \\
+All Beauty (5 e.)     & 0.781       & 0.801       \\
+\hline
+\end{tabular}
+\end{center}
+
+
 
 \section{Conclusion}
 
