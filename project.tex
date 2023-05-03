@@ -1,40 +1,11 @@
-%
-% File ranlp2023.tex
-%
-%% Based on the style files for ACL-IJCNLP 2021, which were
-%% Based on the style files for EMNLP 2020, which were
-%% Based on the style files for ACL 2020, which were
-%% Based on the style files for ACL 2018, NAACL 2018/19, which were
-%% Based on the style files for ACL-2015, with some improvements
-%%  taken from the NAACL-2016 style
-%% Based on the style files for ACL-2014, which were, in turn,
-%% based on ACL-2013, ACL-2012, ACL-2011, ACL-2010, ACL-IJCNLP-2009,
-%% EACL-2009, IJCNLP-2008...
-%% Based on the style files for EACL 2006 by 
-%%e.agirre@ehu.es or Sergi.Balari@uab.es
-%% and that of ACL 08 by Joakim Nivre and Noah Smith
-
 \documentclass[11pt,a4paper]{article}
 \usepackage[hyperref]{project}
 \usepackage{times}
 \usepackage{latexsym}
 \renewcommand{\UrlFont}{\ttfamily\small}
-
-% This is not strictly necessary, and may be commented out,
-% but it will improve the layout of the manuscript,
-% and will typically save some space.
 \usepackage{microtype}
 
-%\aclfinalcopy % Uncomment this line for the final submission
-%\def\aclpaperid{***} %  Enter the acl Paper ID here
-
-%\setlength\titlebox{5cm}
-% You can expand the titlebox if you need extra space
-% to show all the authors. Please do not make the titlebox
-% smaller than 5cm (the original size); we will check this
-% in the camera-ready version and ask you to change it back.
-
-\title{Affects of Named Entities on Amazon Sentiment Analysis}
+\title{Effects of Named Entities on Amazon Sentiment Analysis}
 
 \author{Anne Turmel \\
   USM / Address line 1 \\
@@ -54,24 +25,26 @@
 \begin{abstract}
   % TO DO
 % Abstraction needs to be written after writing everything else
+Sentiment analysis is an important task for understanding how a group feel about a product, brand, or service. Currently, there are a lot of competitive models out there to handle Amazon sentiment analysis. Our paper experimented with a new idea of masking name entities from the Amazon product review to see if there is an improvement to models compared to keeping the Amazon review text from too much noise in name entities. Results show name enitities has small sentiment value, but does not improve the sentiment analysis of a model. One small outlier did reduce noise for Amazon product review sentiment analysis.
+
 \end{abstract}
 
 \section{Introduction}
 
-% adjectives, adverbs, nouns, and verbs can obtain sentiment detail/ - Page 11 of 
-% nouns are important for content details - Page 19
-% Object is a noun, proper noun, and sometimes a verb - Page 25
-
 Sentiment Analysis looks into extracting subjective information from a source. Some words has more weight in sentiment analysis compared to other words. With reviews from Amazon, name entities are mentioned in the review text. 
 
-There has been plenty of models on predicting sentiment analysis of Amazon reviews. The top 3 models; accurancies unsupervised data augmentation for consistency training \cite{unsupervised}, deep pyramid convolutional neural networks for text categorization \cite{pyramid}, and disconnected recurrent neural networks for text categorization \cite{disconnect}; all has been tested with Amazon product reviews from users. Although those models accurancies are between 60\%-70\% percent, does simplifing the name enitities into one word affect Amazon sentiment analysis in positive or negative accurancies. The possiblility of removing the context of named entity affects the training and tests of sentiment analysis.
+There has been plenty of models on predicting sentiment analysis of Amazon reviews. The top 3 models; accurancies unsupervised data augmentation for consistency training \cite{unsupervised}, deep pyramid convolutional neural networks for text categorization \cite{pyramid}, and disconnected recurrent neural networks for text categorization \cite{disconnect}; all has been tested with Amazon product reviews from users. These models accurancies are between 60\%-70\% percent. These models were trained on the raw Amazon product review full.
+
+A name entity are phrases that contain the names of persons, organizations, locations, times, and quantities \cite{conll}. Does simplifing the name enitities into one mask word affect Amazon sentiment analysis in positive or negative accurancies? The possiblility of removing the context of named entity affects the training and tests of sentiment analysis could reduce noise for better model performance. Moreover, this will determine if name entities hold any sentiment value.
 
 \section{Related Work}
 
 % https://aclanthology.org/H05-1044.pdf
-Specific words has neutral, positive, or negative polarity when it comes to sentiment analysis. Recognizing Contextual Polarity in Phrase-Level Sentiment Analysis research determined a new stragety of figuring out polarity of words in senitment analysis. The research did not look into the part of speech of these words, but showed how some words can have no impact to sentiment analysis. 
+\noindent \textbf{Polarity on Sentiment Analsys} Specific words has neutral, positive, or negative polarity when it comes to sentiment analysis. Recognizing Contextual Polarity in Phrase-Level Sentiment Analysis research determined a new stragety of figuring out polarity of words in senitment analysis. The research looked into how specific parts of a speech affect the polarity of a word. More specifically, nouns were classified as neutral polar. Name entities are nouns, so name entities is considered a neutral polarity. With name entities being neutral polarity, name entities is can be proposed as not having sentiment value for sentiment analysis. \\
 
-Research into subjectivity compared with objectivity of a word looked into parts of speech affects of sentiment analysis from Bing Liu \cite{subject}. It has been noted from Bing Liu sentiment analysis on subjectivity that adjectives, adverbs, nouns, and verbs can obtain sentiment detail. Furthermore, an object in object extraction from sentiment is a noun, proper noun, and sometimes a verb. The paper didn't look into named entities give the impacts of training with the context of the named entities.
+\noindent \textbf{Part of Speech Subjectivity} Research into subjectivity compared with objectivity of a word looked into parts of speech affects of sentiment analysis from Bing Liu \cite{subject}. It has been noted from Bing Liu sentiment analysis on subjectivity that adjectives, adverbs, nouns, and verbs can obtain sentiment detail. Furthermore, an object in object extraction from sentiment is a noun, proper noun, and sometimes a verb. The paper didn't look into named entities give the impacts of training with the context of the named entities. \\
+
+\noindent \textbf{Name Entity Polysemy} Ming Zhoa-Yan and Chua Tat Seng experimented with polysemy in entity linking for context modeling \cite{MING201518}. Polysemy is a word or phrase that can have multiple different meaning. Some name entities are polysemy. An example in article is ABC may stand for American Broadcasting Company, Alphabet Network, or ABC. This shows there are multiple entity linking between with names. Research did not look into these multiple entity linkings having impact on sentiment context for sentiment analysis.
 
 \section{Task}
 
@@ -90,12 +63,12 @@ Apparently you can only use it on the
 interweb at Amazon." 
 
 Detect Amazon and Walmart as named entity,
-so replaced with <NNP>
+so replaced with <ENT>
 
 "It's just like having $100. Except I
-couldn't get <NNP> to accept it. 
+couldn't get <ENT> to accept it. 
 Apparently you can only use it on 
-the interweb at <NNP>."
+the interweb at <ENT>."
 \end{verbatim}
 \end{small}
 
@@ -110,38 +83,25 @@ LUKE is an entity extraction model that can be used for extracting entities in a
 
 Albert is pretrained BERT model on BookCorpus \cite{DBLP:journals/corr/abs-1909-11942}. The pretrained model is used to understand the english language. The purpose of Albert is to have a pretrained model ready to for fine tuning. Reason for albert is the fine-tuned task of making decision based on whole sentences. The fine-tuning process will learn from Amazon product review text to classify the rating of the review. The rating of the review will show the sentiment analysis of the fine-tuned model.
 
-% \subsection{Unsupervised Data Augmentation}
-
-% Unsupervised data augmentation is a way to train the model. Can make comparsion on data with proper noun context and without.
-
-% \subsection{Deep Pyramid Convolutional Neural Networks for Text Categorization}
-
-% Deep Pyramid Convolutional Neural Networks for Text Categorization is another method for training a model for sentiment analysis. Can make comparsion on data with proper noun context and without.
-
-% \subsection{FastText}
-
-% FastText can be used in a bag of tricks for efficient text classifcation. Can make comparsion on data with proper noun context and without.
-
 \section{Experiments}
 
-% Need to cite https://cseweb.ucsd.edu/~jmcauley/pdfs/emnlp19a.pdf
-% Data is from that source.
-The Amazon product review data came from University of California, San Diego Amazon product review dataset \cite{data}. The data consists of the rating and the review text that came with the rating for training and testing. The rating from 1-5 will be used for the sentiment feeling of the Amazon review.
+The Amazon product review data came from University of California, San Diego Amazon product review dataset \cite{data}. The data consists of the rating and the review text that came with the rating for training and testing. The rating from 1-5 will be used for the sentiment feeling of the Amazon review. The experiment used the 5 categories; toys and games, office products, appliances, all beauty, and video games.
 
-\subsection{Parsing Named Entities}
+\subsection{Masking Named Entities}
 
-From each category of Amazon product review, there is two copies of the same product review. One copy has the original Amazon product review text. The second copy has the review text parsed out named entities with a mask (NNP). There is at least 10,000 Amazon product reviews for each category that was used for the models. This leaves over 1,000 review text being tested for evaluation of the model.
+From each category of Amazon product review, there is two copies of the same product review. One copy has the original Amazon product review text. The second copy has the review text parsed out named entities with a mask (ENT). There is at least 10,000 Amazon product reviews for each category that was used for the models. This leaves over 1,000 review text being tested for evaluation of the model.
 
 \subsection{Training the Models}
 
-% Edit the model once done
 The albert-base-v2 will be used for fine-tuning on detecting sentiment analysis. Each model requiring training will be done with 60\% training, 20\% validation, and 20\% testing. The models will be tested on accurancy between the Amazon product reviews untouched and the review that has named entity replaced with a mask. The only change with the models is the text has named entity parsed out. This will show how the model compares with or without the context of the proper noun.
 
 When training with albert pretrained model, the PyTorch seed is set to 1324224321 to reduce random when training the model. Moreover, the learning rate, batch size, and number of epochs stays the same. Keeping these values the same will ensure the only change between the two models is the review text being masked or not.
 
 \subsection{Results}
 
-Shown in figure 1.1, the left column is the category the Amazon product review data was in. The middle column is the original unalterated product review text accurancy for testing evaluation after training. The right column is the alterate prduct review with named entity detected by LUKE to be replaced with a mask testing accurancy after training on masked review text. \\
+Shown in figure 1.1, the left column is the category the Amazon product review data was in. The middle column is the original unalterated product review text accurancy for testing evaluation after training. The right column is the alterate prduct review with named entity detected by LUKE to be replaced with a mask testing accurancy after training on masked review text.
+
+In the table, 1e Stands for one epoch and 5e is five epoches used during training. Ori. is the Amazon product review text that was not touched. Accur. is the accurancy results of 10\% of the Amazon product review data. The batch sizes were both set to 16. Lastly, the learning rate was 2e-5. All of these values were set the same for all training, validation, and testing. \\
 
 \begin{center}
 \textbf{albert-base-v2 fine-tuned accurancy}
@@ -149,23 +109,57 @@ Shown in figure 1.1, the left column is the category the Amazon product review d
 \hline
  Category & Ori. Accur. & LUKE Accur. \\
 \hline
-Video Games (1 e.)    & 0.789       & 0.779       \\
-Video Games (5 e.)    & 0.784       & 0.775       \\
-Appliances (1 e.)     & 0.740       & 0.712       \\
-Appliances (5 e.)     & 0.712       & 0.714       \\
-Toys and Games (1 e.) & 0.853       & 0.850       \\
-Toys and Games (5 e.) & 0.841       & 0.846       \\
-All Beauty (1 e.)     & 0.809       & 0.801       \\
-All Beauty (5 e.)     & 0.781       & 0.801       \\
+Video Games (1e)    & 0.789       & 0.779       \\
+Video Games (5e)    & 0.784       & 0.775       \\
+Appliances (1e)     & 0.740       & 0.712       \\
+Appliances (5e)     & 0.712       & 0.714       \\
+Toys + Games (1e)   & 0.853       & 0.850       \\
+Toys + Games (5e)   & 0.841       & 0.846       \\
+All Beauty (1e)     & 0.809       & 0.801       \\
+All Beauty (5e)     & 0.781       & 0.801       \\
+Office (1e)         & 0.820       & 0.809       \\
+Office (5e)         & 0.807       & 0.811       \\
 \hline
 \end{tabular}
 \end{center}
 
+Looking at the epochs level 5, it is noted there is no significant difference between training, validating, and testing on the review text compared to masked name entities from LUKE. Showing that masking name entities has no affects on it's own data. For 1 epochs, the original review text data accurancy were slightly better than masked name entity text data. The fine-tuning did not have enough feeding the data itself back through the model, so it did not understand the masking.
 
+We experimented on the saved different Amazon categories models of from previous trainings and applied testing of 10,000 records from other Amazon categories. Both the original review text model and LUKE masked review text model were both applied to original review text and LUKE masked review text. The model in the table is from video games category of Amazon product review with epochs of 5. \\
+
+\begin{center}
+\textbf{Video Games Original Model Testing}
+\begin{tabular}{|l|r|r|}
+  \hline
+   Category & Ori. Accur. & LUKE Accur. \\
+  \hline
+  Appliances     & 0.713       & 0.712       \\
+  Toys and Games & 0.832       & 0.837       \\
+  All Beauty     & 0.792       & 0.791       \\
+  Office         & 0.797       & 0.797       \\
+  \hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\textbf{Video Games LUKE Model Testing}
+\begin{tabular}{|l|r|r|}
+  \hline
+    Category & Ori. Accur. & LUKE Accur. \\
+  \hline
+  Appliances     & 0.921       & 0.925       \\
+  Toys and Games & 0.806       & 0.807       \\
+  All Beauty     & 0.768       & 0.768       \\
+  Office         & 0.777       & 0.777       \\
+  \hline
+\end{tabular}
+\end{center}
+
+Videos Games trained on the original data did slightly better than video games trained on LUKE mask model except for Appliances. Doing sentiment analysis from video games LUKE masked model with appliances Amazon product reviews was significantly better than video games original data model and any appliances models. However, every other video games model with other categories besides appliances did slight worse or signiciantly worse than the category model tested on its own 10\% unseen data. This shows that the context of masking name entities on video games were able to detect more accurly on sentiment classification for appliances reviews.
 
 \section{Conclusion}
 
-Conclusion.
+From this experiment we conclude that name entities masking review text does not improve sentiment analysis for Amazon product reviews. There is only one outlier where LUKE masking review model was signiciantly better for another category compared to original review text data. There are some small percentage of name entities that do hold senitment context for sentitiment analysis based on the original Amazon product review models being slight more effective than name entities masked models. Because name entities masking did not have more effective results on Amazon sentiment analysis compared to not masking, name entities is not necessary as it is inefficient to do an extra step of masking data.
 
 \bibliographystyle{plain}
 \bibliography{project}
