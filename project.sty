@@ -109,7 +109,7 @@
   % It provides a backup, no-op definiton of \href.
   % This is necessary because \href command is used in the acl_natbib.bst file.
   \def\href#1#2{{#2}}
-  % We still need to load xcolor in this case because the lighter line numbers require it. (SC/KG/WL) 
+  % We still need to load xcolor fin this case because the lighter line numbers require it. (SC/KG/WL) 
   \usepackage{xcolor}
 \fi
 
@@ -375,12 +375,7 @@
 
 \newcommand\outauthor{
     \begin{tabular}[t]{c}
-	\ifaclfinal 
-	     \bf\@author
-	\else 
-		% Avoiding common accidental de-anonymization issue. --MM
-        \bf 
-	\fi
+	     \bf \@author
     \end{tabular}}
 
 % Changing the expanded titlebox for submissions to 2.5 in (rather than 6.5cm)
